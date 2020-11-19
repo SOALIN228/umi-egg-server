@@ -35,6 +35,17 @@ export default (appInfo: EggAppInfo) => {
       freezeTableName: true
     }
   };
+
+  config.session = {
+    key: 'SOA_salt',
+    httpOnly: true,
+    maxAge: 1000 * 5,
+    renew: true
+  };
+
+  config.jwt = {
+    secret: 'SOA_salt'
+  };
   // the return config will combines to EggAppConfig
   return {
     ...config,

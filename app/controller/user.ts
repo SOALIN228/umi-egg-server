@@ -8,6 +8,18 @@ import { Controller } from 'egg';
 import * as md5 from 'md5';
 
 export default class UserController extends Controller {
+  public async jwtSign () {
+    const { ctx, app } = this;
+    const username = ctx.request.body.username;
+    const token = (app as any).jwt.sign({
+      username,
+    }, app.config.jwt.secret);
+    // 保存token
+    ctx.session[username] = 1;
+
+    return token;
+  }
+
   public async register () {
     const { ctx, app } = this;
     const params = ctx.request.body;
@@ -26,12 +38,14 @@ export default class UserController extends Controller {
       updateTime: ctx.helper.time()
     });
     if (result) {
+      const token = await this.jwtSign();
       ctx.body = {
         status: 200,
         data: {
           ...ctx.helper.unPick(result.dataValues, ['password']),
           createTime: ctx.helper.timestamp(result.createTime),
-          updateTime: ctx.helper.timestamp(result.updateTime)
+          updateTime: ctx.helper.timestamp(result.updateTime),
+          token
         }
       };
     } else {
@@ -47,19 +61,20 @@ export default class UserController extends Controller {
     const { username, password } = ctx.request.body;
     const user: any = await ctx.service.user.getUser(username, password);
     if (user) {
-      ctx.session.userId = user.id;
+      const token = await this.jwtSign();
       ctx.body = {
         status: 200,
         data: {
           ...ctx.helper.unPick(user.dataValues, ['password']),
           createTime: ctx.helper.timestamp(user.createTime),
-          updateTime: ctx.helper.timestamp(user.updateTime)
+          updateTime: ctx.helper.timestamp(user.updateTime),
+          token
         }
       };
     } else {
       ctx.body = {
         status: 500,
-        errMsg: '该用户不存在'
+        errMsg: '账号或密码错误'
       };
     }
   }

@@ -6,6 +6,7 @@
   "rules": {
     "space-before-function-paren": "off",
     "comma-dangle": "off",
-    "array-bracket-spacing": "off"
+    "array-bracket-spacing": "off",
+    "no-trailing-spaces": "off"
   }
 }
