@@ -1,0 +1,11 @@
+{
+  "extends": "eslint-config-egg/typescript",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "space-before-function-paren": "off",
+    "comma-dangle": "off",
+    "array-bracket-spacing": "off"
+  }
+}
