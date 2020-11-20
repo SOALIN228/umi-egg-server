@@ -14,14 +14,35 @@ export default (appInfo: EggAppInfo) => {
   const bizConfig = {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
     salt: 'soalin',
+    redisExpire: 60 * 60 * 24
   };
 
+  // 关闭egg 自带csrf
   config.security = {
     csrf: {
       enable: false,
     },
   };
 
+  // 配置session
+  config.session = {
+    key: 'SOA_salt',
+    httpOnly: true,
+    maxAge: 24 * 3600 * 1000,
+    renew: true
+  };
+
+  // 配置jwt
+  config.jwt = {
+    secret: 'SOA_salt'
+  };
+
+  // 配置登录拦截
+  config.auth = {
+    exclude: ['/api/user/login', '/api/user/register']
+  };
+
+  // 配置sequelize 连接mysql
   config.sequelize = {
     dialect: 'mysql', // 表示是mysql数据库
     host: '127.0.0.1',
@@ -36,16 +57,16 @@ export default (appInfo: EggAppInfo) => {
     }
   };
 
-  config.session = {
-    key: 'SOA_salt',
-    httpOnly: true,
-    maxAge: 1000 * 5,
-    renew: true
+  // 配置redis
+  config.redis = {
+    client: {
+      port: 6379,
+      host: '127.0.0.1',
+      password: '717900',
+      db: 0
+    }
   };
 
-  config.jwt = {
-    secret: 'SOA_salt'
-  };
   // the return config will combines to EggAppConfig
   return {
     ...config,

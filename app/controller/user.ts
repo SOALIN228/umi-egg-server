@@ -4,25 +4,36 @@
  * Time: 07:06
  * Desc:
  */
-import { Controller } from 'egg';
+import { Controller, Context } from 'egg';
 import * as md5 from 'md5';
 
 export default class UserController extends Controller {
   public async jwtSign () {
     const { ctx, app } = this;
-    const username = ctx.request.body.username;
+    const username = ctx.params('username');
     const token = (app as any).jwt.sign({
       username,
     }, app.config.jwt.secret);
-    // 保存token
-    ctx.session[username] = 1;
 
+    // 保存token到session
+    // ctx.session[username] = 1;
+
+    // 保存token到redis
+    await (app as any).redis.set(username, token, 'EX', app.config.redisExpire);
     return token;
+  }
+
+  parseResult (ctx: Context, result: any) {
+    return {
+      ...ctx.helper.unPick(result.dataValues, ['password']),
+      createTime: ctx.helper.timestamp(result.createTime),
+      updateTime: ctx.helper.timestamp(result.updateTime)
+    };
   }
 
   public async register () {
     const { ctx, app } = this;
-    const params = ctx.request.body;
+    const params = ctx.params();
     const user = await ctx.service.user.getUser(params.username);
     if (user) {
       ctx.body = {
@@ -42,9 +53,7 @@ export default class UserController extends Controller {
       ctx.body = {
         status: 200,
         data: {
-          ...ctx.helper.unPick(result.dataValues, ['password']),
-          createTime: ctx.helper.timestamp(result.createTime),
-          updateTime: ctx.helper.timestamp(result.updateTime),
+          ...this.parseResult(ctx, result),
           token
         }
       };
@@ -65,9 +74,7 @@ export default class UserController extends Controller {
       ctx.body = {
         status: 200,
         data: {
-          ...ctx.helper.unPick(user.dataValues, ['password']),
-          createTime: ctx.helper.timestamp(user.createTime),
-          updateTime: ctx.helper.timestamp(user.updateTime),
+          ...this.parseResult(ctx, user),
           token
         }
       };
@@ -87,9 +94,7 @@ export default class UserController extends Controller {
       ctx.body = {
         status: 200,
         data: {
-          ...ctx.helper.unPick(user.dataValues, ['password']),
-          createTime: ctx.helper.timestamp(user.createTime),
-          updateTime: ctx.helper.timestamp(user.updateTime),
+          ...this.parseResult(ctx, user),
         }
       };
     } else {
@@ -103,7 +108,9 @@ export default class UserController extends Controller {
   public async logout () {
     const { ctx } = this;
     try {
-      ctx.session[ctx.username] = null;
+      // ctx.session[ctx.username] = null;
+      // 删除redis 中存储用户信息
+      ctx.app.redis.del(ctx.username);
       ctx.body = {
         status: 200,
         data: 'ok'

@@ -11,6 +11,9 @@ export default class UserService extends Service {
   public async getUser (username: string, password?: string) {
     try {
       const { ctx, app } = this;
+      if (!username) {
+        return null;
+      }
       const _where = password ? { username, password: md5(password + app.config.salt) } : { username };
       const result = await ctx.model.User.findOne({
         where: _where
