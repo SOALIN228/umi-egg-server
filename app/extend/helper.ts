@@ -6,7 +6,6 @@
  */
 import * as dayjs from 'dayjs';
 
-
 export default {
   time () {
     return dayjs().format('YYYY-MM-DD HH:mm:ss');
