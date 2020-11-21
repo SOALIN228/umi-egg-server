@@ -4,10 +4,11 @@
  * Time: 07:06
  * Desc:
  */
-import { Controller, Context } from 'egg';
+import { Context } from 'egg';
+import ErrorController from './error';
 import * as md5 from 'md5';
 
-export default class UserController extends Controller {
+export default class UserController extends ErrorController {
   public async jwtSign () {
     const { ctx, app } = this;
     const username = ctx.params('username');
@@ -36,10 +37,7 @@ export default class UserController extends Controller {
     const params = ctx.params();
     const user = await ctx.service.user.getUser(params.username);
     if (user) {
-      ctx.body = {
-        status: 500,
-        errMsg: '用户已经存在'
-      };
+      this.error('用户已经存在');
       return;
     }
     const result: any = await ctx.service.user.add({
@@ -50,18 +48,12 @@ export default class UserController extends Controller {
     });
     if (result) {
       const token = await this.jwtSign();
-      ctx.body = {
-        status: 200,
-        data: {
-          ...this.parseResult(ctx, result),
-          token
-        }
-      };
+      this.success({
+        ...this.parseResult(ctx, result),
+        token
+      });
     } else {
-      ctx.body = {
-        status: 500,
-        errMsg: '用户注册失败'
-      };
+      this.error('用户注册失败');
     }
   }
 
@@ -71,18 +63,12 @@ export default class UserController extends Controller {
     const user: any = await ctx.service.user.getUser(username, password);
     if (user) {
       const token = await this.jwtSign();
-      ctx.body = {
-        status: 200,
-        data: {
-          ...this.parseResult(ctx, user),
-          token
-        }
-      };
+      this.success({
+        ...this.parseResult(ctx, user),
+        token
+      });
     } else {
-      ctx.body = {
-        status: 500,
-        errMsg: '账号或密码错误'
-      };
+      this.error('账号或密码错误');
     }
   }
 
@@ -91,17 +77,11 @@ export default class UserController extends Controller {
     const user: any = await ctx.service.user.getUser(ctx.username);
 
     if (user) {
-      ctx.body = {
-        status: 200,
-        data: {
-          ...this.parseResult(ctx, user),
-        }
-      };
+      this.success({
+        ...this.parseResult(ctx, user),
+      });
     } else {
-      ctx.body = {
-        status: 500,
-        errMsg: '该用户不存在'
-      };
+      this.error('该用户不存在', 2002);
     }
   }
 
@@ -111,15 +91,9 @@ export default class UserController extends Controller {
       // ctx.session[ctx.username] = null;
       // 删除redis 中存储用户信息
       ctx.app.redis.del(ctx.username);
-      ctx.body = {
-        status: 200,
-        data: 'ok'
-      };
+      this.success('ok');
     } catch (error) {
-      ctx.body = {
-        status: 500,
-        errMsg: '退出登录失败'
-      };
+      this.error('退出登录失败');
     }
   }
 }

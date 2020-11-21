@@ -7,6 +7,7 @@
     "space-before-function-paren": "off",
     "comma-dangle": "off",
     "array-bracket-spacing": "off",
-    "no-trailing-spaces": "off"
+    "no-trailing-spaces": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   }
 }

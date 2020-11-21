@@ -1,5 +1,6 @@
 import { Context } from 'egg';
 
+// 用户token 验证，判断是否登录
 export default function loginMiddleware (options): any {
   return async (ctx: Context, next: () => Promise<any>) => {
     // 获取session 中的token

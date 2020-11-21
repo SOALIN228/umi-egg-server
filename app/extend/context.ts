@@ -7,9 +7,19 @@
 import { Context } from 'egg';
 
 export default {
+  params (key?: string) {
+    const _this = this as Context;
+    const method = _this.request.method;
+    if (method === 'GET') {
+      return key ? _this.query[key] : _this.query;
+    }
+
+    return key ? _this.request.body[key] : _this.request.body;
+  },
   get username () {
-    const token = (this as Context).request.header.token;
-    const tokenCache: any = token ? (this as Context).app.jwt.verify(token, (this as Context).app.config.jwt.secret) : undefined;
+    const _this = this as Context;
+    const token = _this.request.header.token;
+    const tokenCache: any = token ? _this.app.jwt.verify(token, _this.app.config.jwt.secret) : undefined;
 
     return tokenCache ? tokenCache.username : undefined;
   }
