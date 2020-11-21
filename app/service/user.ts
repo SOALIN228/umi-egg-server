@@ -25,9 +25,23 @@ export default class UserService extends BaseService {
       return await ctx.model.User.create(params);
     });
   }
+
+  public async edit (params: Partial<UserItem>) {
+    return this.run(async (ctx, app) => {
+      return await ctx.model.User.update(params, {
+        where: {
+          username: ctx.username
+        }
+      });
+    });
+  }
 }
 
 export interface UserItem {
   username: string;
   password: string;
+  avatar: string;
+  phone: string;
+  sign: string;
+  updateTime: string;
 }

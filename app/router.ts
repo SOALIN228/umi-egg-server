@@ -8,4 +8,5 @@ export default (app: Application) => {
   router.post('/api/user/login', controller.user.login);
   router.post('/api/user/detail', userExist, controller.user.detail);
   router.post('/api/user/logout', controller.user.logout);
+  router.post('/api/user/edit', controller.user.edit);
 };

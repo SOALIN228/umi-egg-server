@@ -96,4 +96,17 @@ export default class UserController extends ErrorController {
       this.error('退出登录失败');
     }
   }
+
+  public async edit () {
+    const { ctx } = this;
+    try {
+      const result = ctx.service.user.edit({
+        ...ctx.params(),
+        updateTime: ctx.helper.time()
+      });
+      this.success({ msg: '修改成功' });
+    } catch (error) {
+      this.error('修改信息失败');
+    }
+  }
 }
