@@ -18,4 +18,13 @@ export default class HouseController extends ErrorController {
     const result: any = await ctx.service.house.search(ctx.params());
     this.success(result);
   }
+
+  public async detail () {
+    const { ctx } = this;
+    const result: any = await ctx.service.house.detail(ctx.params('id'));
+    this.success({
+      info: result,
+      banner: result.imgs
+    });
+  }
 }

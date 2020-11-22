@@ -15,11 +15,26 @@ export default (app: Application) => {
     info: STRING(150),
     address: STRING(200),
     price: INTEGER,
-    publishTime: DATE,
+    publishTime: {
+      type: DATE,
+      get () {
+        return new Date(this.getDataValue('publishTime')).getTime();
+      }
+    },
     cityCode: STRING(10),
     showCount: INTEGER,
-    startTime: DATE,
-    endTime: DATE
+    startTime: {
+      type: DATE,
+      get () {
+        return new Date(this.getDataValue('startTime')).getTime();
+      }
+    },
+    endTime: {
+      type: DATE,
+      get () {
+        return new Date(this.getDataValue('endTime')).getTime();
+      }
+    }
   });
 
   // 一个房子对应多个图片，使用 hasMany 做关联

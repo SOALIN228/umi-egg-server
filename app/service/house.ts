@@ -62,6 +62,33 @@ export default class HouseService extends BaseService {
       });
     });
   }
+
+  public async detail (id: string) {
+    return this.run(async (ctx, app) => {
+      const result = await ctx.model.House.findOne({
+        where: {
+          id
+        },
+        include: [
+          {
+            model: app.model.Imgs,
+            attributes: ['url']
+          }
+        ]
+      });
+
+      // 访问数+1
+      await ctx.model.House.update({
+        showCount: result.showCount + 1
+      }, {
+        where: {
+          id
+        }
+      });
+
+      return result;
+    });
+  }
 }
 
 export interface HouseSearch {
