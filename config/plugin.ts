@@ -22,6 +22,10 @@ const plugin: EggPlugin = {
   auth: {
     enable: true,
     path: path.join(__dirname, '../lib/plugin/egg-auth')
+  },
+  notFound: {
+    enable: true,
+    path: path.join(__dirname, '../lib/plugin/egg-notFound')
   }
 };
 
