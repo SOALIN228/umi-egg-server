@@ -2,14 +2,16 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
+import ExportCommons from '../../../app/controller/commons';
 import ExportError from '../../../app/controller/error';
-import ExportHome from '../../../app/controller/home';
+import ExportHouse from '../../../app/controller/house';
 import ExportUser from '../../../app/controller/user';
 
 declare module 'egg' {
   interface IController {
+    commons: ExportCommons;
     error: ExportError;
-    home: ExportHome;
+    house: ExportHouse;
     user: ExportUser;
   }
 }
