@@ -11,4 +11,5 @@ export default (app: Application) => {
   router.post('/api/user/edit', controller.user.edit);
   router.post('/api/commons/cities', controller.commons.cities);
   router.post('/api/house/hot', controller.house.hot);
+  router.post('/api/house/search', controller.house.search);
 };

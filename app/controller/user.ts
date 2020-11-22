@@ -9,7 +9,7 @@ import ErrorController from './error';
 import * as md5 from 'md5';
 
 export default class UserController extends ErrorController {
-  public async jwtSign () {
+  private async jwtSign () {
     const { ctx, app } = this;
     const username = ctx.params('username');
     const token = (app as any).jwt.sign({
@@ -24,7 +24,7 @@ export default class UserController extends ErrorController {
     return token;
   }
 
-  parseResult (ctx: Context, result: any) {
+  private parseResult (ctx: Context, result: any) {
     return {
       ...ctx.helper.unPick(result.dataValues, ['password']),
       createTime: ctx.helper.timestamp(result.createTime),

@@ -12,4 +12,10 @@ export default class HouseController extends ErrorController {
     const result: any = await ctx.service.house.hot();
     this.success(result);
   }
+
+  public async search () {
+    const { ctx } = this;
+    const result: any = await ctx.service.house.search(ctx.params());
+    this.success(result);
+  }
 }
