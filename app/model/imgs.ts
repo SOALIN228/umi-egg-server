@@ -13,6 +13,11 @@ export default (app: Application) => {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     url: STRING(500),
     houseId: INTEGER,
-    createTime: DATE,
+    createTime: {
+      type: DATE,
+      get () {
+        return new Date(this.getDataValue('createTime')).getTime();
+      }
+    },
   });
 };

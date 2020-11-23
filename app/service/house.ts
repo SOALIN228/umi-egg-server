@@ -55,7 +55,7 @@ export default class HouseService extends BaseService {
         delete where.name;
       }
       return await ctx.model.House.findAll({
-        limit: 8,
+        limit: params.pageSize,
         ...this.commonAttr(app),
         offset: (params.pageNum - 1) * params.pageSize,
         where

@@ -16,7 +16,17 @@ export default (app: Application) => {
     avatar: TEXT('long' as any),
     phone: STRING(20),
     sign: STRING(300),
-    createTime: DATE,
-    updateTime: DATE,
+    createTime: {
+      type: DATE,
+      get () {
+        return new Date(this.getDataValue('createTime')).getTime();
+      }
+    },
+    updateTime: {
+      type: DATE,
+      get () {
+        return new Date(this.getDataValue('updateTime')).getTime();
+      }
+    },
   });
 };
