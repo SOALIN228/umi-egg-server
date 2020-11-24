@@ -6,6 +6,7 @@ import ExportComment from '../../../app/controller/comment';
 import ExportCommons from '../../../app/controller/commons';
 import ExportError from '../../../app/controller/error';
 import ExportHouse from '../../../app/controller/house';
+import ExportOrders from '../../../app/controller/orders';
 import ExportUser from '../../../app/controller/user';
 
 declare module 'egg' {
@@ -14,6 +15,7 @@ declare module 'egg' {
     commons: ExportCommons;
     error: ExportError;
     house: ExportHouse;
+    orders: ExportOrders;
     user: ExportUser;
   }
 }

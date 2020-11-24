@@ -100,7 +100,7 @@ export default class UserController extends ErrorController {
   public async edit () {
     const { ctx } = this;
     try {
-      const result = ctx.service.user.edit({
+      ctx.service.user.edit({
         ...ctx.params(),
         updateTime: ctx.helper.time()
       });

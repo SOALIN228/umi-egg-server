@@ -11,6 +11,7 @@ import ExportBase from '../../../app/service/base';
 import ExportComment from '../../../app/service/comment';
 import ExportCommons from '../../../app/service/commons';
 import ExportHouse from '../../../app/service/house';
+import ExportOrders from '../../../app/service/orders';
 import ExportUser from '../../../app/service/user';
 
 declare module 'egg' {
@@ -20,6 +21,7 @@ declare module 'egg' {
     comment: AutoInstanceType<typeof ExportComment>;
     commons: AutoInstanceType<typeof ExportCommons>;
     house: AutoInstanceType<typeof ExportHouse>;
+    orders: AutoInstanceType<typeof ExportOrders>;
     user: AutoInstanceType<typeof ExportUser>;
   }
 }
