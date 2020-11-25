@@ -9,9 +9,8 @@ import ErrorController from './error';
 export default class OrdersController extends ErrorController {
   public async hasOrder () {
     const { ctx, } = this;
-    const user: any = await ctx.service.user.getUser(ctx.username);
     const result: any = await ctx.service.orders.hasOrder({
-      userId: user.id,
+      userId: ctx.userId,
       houseId: ctx.params('id')
     });
 
@@ -20,9 +19,8 @@ export default class OrdersController extends ErrorController {
 
   public async addOrder () {
     const { ctx } = this;
-    const user: any = await ctx.service.user.getUser(ctx.username);
     const result: any = await ctx.service.orders.addOrder({
-      userId: user.id,
+      userId: ctx.userId,
       houseId: ctx.params('id'),
       isPayed: 0,
       createTime: ctx.helper.time(),
@@ -34,9 +32,8 @@ export default class OrdersController extends ErrorController {
 
   public async delOrder () {
     const { ctx } = this;
-    const user: any = await ctx.service.user.getUser(ctx.username);
     const result: any = await ctx.service.orders.delOrder({
-      userId: user.id,
+      userId: ctx.userId,
       houseId: ctx.params('id'),
       updateTime: ctx.helper.time()
     });
@@ -46,10 +43,9 @@ export default class OrdersController extends ErrorController {
 
   public async lists () {
     const { ctx } = this;
-    const user: any = await ctx.service.user.getUser(ctx.username);
     const result: any = await ctx.service.orders.lists({
       ...ctx.params(),
-      userId: user.id
+      userId: ctx.userId,
     });
 
     this.success(result);

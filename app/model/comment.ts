@@ -11,11 +11,18 @@ export default (app: Application) => {
 
   const Comment: any = app.model.define('comment', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    userId: INTEGER,
-    houseId: INTEGER,
+    userId: {
+      type: INTEGER,
+      field: 'user_id'
+    },
+    houseId: {
+      type: INTEGER,
+      field: 'house_id'
+    },
     msg: STRING(500),
     createTime: {
       type: DATE,
+      field: 'create_time',
       get () {
         return new Date(this.getDataValue('createTime')).getTime();
       }

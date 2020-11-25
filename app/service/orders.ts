@@ -9,14 +9,19 @@ import BaseService from './base';
 export default class OrdersService extends BaseService {
   public async hasOrder (params: OrdersProps) {
     return this.run(async (ctx, app) => {
+      const { Op } = app.Sequelize;
+
       return await ctx.model.Orders.findOne({
         order: [
           ['createTime', 'DESC']
         ],
         where: {
           userId: params.userId,
-          houseId: params.houseId
-        }
+          houseId: params.houseId,
+          isPayed: {
+            [Op.in]: [0, 1]
+          }
+        },
       });
     });
   }

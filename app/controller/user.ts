@@ -8,12 +8,17 @@ import { Context } from 'egg';
 import ErrorController from './error';
 import * as md5 from 'md5';
 
+interface tokenProps {
+  id: string;
+  username: string;
+}
+
 export default class UserController extends ErrorController {
-  private async jwtSign () {
+  private async jwtSign ({ id, username }: tokenProps) {
     const { ctx, app } = this;
-    const username = ctx.params('username');
     const token = (app as any).jwt.sign({
-      username,
+      id,
+      username
     }, app.config.jwt.secret);
 
     // 保存token到session
@@ -47,7 +52,10 @@ export default class UserController extends ErrorController {
       updateTime: ctx.helper.time()
     });
     if (result) {
-      const token = await this.jwtSign();
+      const token = await this.jwtSign({
+        id: result.id,
+        username: result.username
+      });
       this.success({
         ...this.parseResult(ctx, result),
         token
@@ -62,7 +70,10 @@ export default class UserController extends ErrorController {
     const { username, password } = ctx.request.body;
     const user: any = await ctx.service.user.getUser(username, password);
     if (user) {
-      const token = await this.jwtSign();
+      const token = await this.jwtSign({
+        id: user.id,
+        username: user.username
+      });
       this.success({
         ...this.parseResult(ctx, user),
         token

@@ -12,9 +12,13 @@ export default (app: Application) => {
   return app.model.define('imgs', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     url: STRING(500),
-    houseId: INTEGER,
+    houseId: {
+      type: INTEGER,
+      field: 'house_id'
+    },
     createTime: {
       type: DATE,
+      field: 'create_time',
       get () {
         return new Date(this.getDataValue('createTime')).getTime();
       }

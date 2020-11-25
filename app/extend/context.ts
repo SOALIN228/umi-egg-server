@@ -22,5 +22,12 @@ export default {
     const tokenCache: any = token ? _this.app.jwt.verify(token, _this.app.config.jwt.secret) : undefined;
 
     return tokenCache ? tokenCache.username : undefined;
+  },
+  get userId () {
+    const _this = this as Context;
+    const token = _this.request.header.token;
+    const tokenCache: any = token ? _this.app.jwt.verify(token, _this.app.config.jwt.secret) : undefined;
+
+    return tokenCache ? tokenCache.id : undefined;
   }
 };

@@ -9,9 +9,8 @@ import ErrorController from './error';
 export default class CommentController extends ErrorController {
   public async add () {
     const { ctx } = this;
-    const user: any = await ctx.service.user.getUser(ctx.username);
     const result: any = await ctx.service.comment.add({
-      userId: user.id,
+      userId: ctx.userId,
       houseId: ctx.params('houseId'),
       msg: ctx.params('comment'),
       createTime: ctx.helper.time()

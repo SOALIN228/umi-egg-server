@@ -17,20 +17,29 @@ export default (app: Application) => {
     price: INTEGER,
     publishTime: {
       type: DATE,
+      field: 'publish_time',
       get () {
         return new Date(this.getDataValue('publishTime')).getTime();
       }
     },
-    cityCode: STRING(10),
-    showCount: INTEGER,
+    cityCode: {
+      type: STRING(10),
+      field: 'city_code'
+    },
+    showCount: {
+      type: INTEGER,
+      field: 'show_count'
+    },
     startTime: {
       type: DATE,
+      field: 'start_time',
       get () {
         return new Date(this.getDataValue('startTime')).getTime();
       }
     },
     endTime: {
       type: DATE,
+      field: 'end_time',
       get () {
         return new Date(this.getDataValue('endTime')).getTime();
       }

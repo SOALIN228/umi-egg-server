@@ -18,12 +18,14 @@ export default (app: Application) => {
     sign: STRING(300),
     createTime: {
       type: DATE,
+      field: 'create_time',
       get () {
         return new Date(this.getDataValue('createTime')).getTime();
       }
     },
     updateTime: {
       type: DATE,
+      field: 'update_time',
       get () {
         return new Date(this.getDataValue('updateTime')).getTime();
       }
