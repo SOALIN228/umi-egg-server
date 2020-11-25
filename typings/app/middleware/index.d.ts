@@ -2,10 +2,12 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
+import ExportHttpLog from '../../../app/middleware/httpLog';
 import ExportUserExist from '../../../app/middleware/userExist';
 
 declare module 'egg' {
   interface IMiddleware {
+    httpLog: typeof ExportHttpLog;
     userExist: typeof ExportUserExist;
   }
 }

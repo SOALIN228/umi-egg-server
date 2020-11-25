@@ -8,7 +8,11 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1605737004796_750';
 
   // add your egg config in here
-  config.middleware = [];
+  config.middleware = ['httpLog'];
+
+  config.httpLog = {
+    type: 'all'
+  };
 
   // add your special config in here
   const bizConfig = {
