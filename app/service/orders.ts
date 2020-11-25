@@ -36,6 +36,33 @@ export default class OrdersService extends BaseService {
       });
     });
   }
+
+  public async lists (params: OrdersList) {
+    return this.run(async (ctx, app) => {
+      console.log('params', params);
+      return ctx.model.Orders.findAll({
+        where: {
+          isPayed: params.type,
+          userId: params.userId
+        },
+        limit: params.pageSize,
+        offset: (params.pageNum - 1) * params.pageSize,
+        include: [
+          {
+            model: app.model.House,
+            as: 'house',
+            include: [
+              {
+                model: app.model.Imgs,
+                attributes: ['url'],
+                limit: 1
+              }
+            ]
+          }
+        ]
+      });
+    });
+  }
 }
 
 export interface OrdersProps {
@@ -45,4 +72,11 @@ export interface OrdersProps {
   isPayed?: number;
   createTime?: string;
   updateTime?: string
+}
+
+export interface OrdersList {
+  type: number;
+  userId: string;
+  pageSize: number;
+  pageNum: number;
 }

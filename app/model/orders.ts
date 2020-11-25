@@ -9,7 +9,7 @@ import { Application } from 'egg';
 export default (app: Application) => {
   const { STRING, INTEGER, DATE, } = app.Sequelize;
 
-  return app.model.define('orders', {
+  const Orders: any = app.model.define('orders', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     orderNumber: {
       type: STRING(20),
@@ -42,4 +42,10 @@ export default (app: Application) => {
       }
     },
   });
+
+  Orders.associate = () => {
+    app.model.Orders.belongsTo(app.model.House, { foreignKey: 'houseId', as: 'house' });
+  };
+
+  return Orders;
 };

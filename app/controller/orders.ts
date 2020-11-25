@@ -43,4 +43,15 @@ export default class OrdersController extends ErrorController {
 
     this.success(result);
   }
+
+  public async lists () {
+    const { ctx } = this;
+    const user: any = await ctx.service.user.getUser(ctx.username);
+    const result: any = await ctx.service.orders.lists({
+      ...ctx.params(),
+      userId: user.id
+    });
+
+    this.success(result);
+  }
 }
