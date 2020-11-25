@@ -10,6 +10,9 @@ export default class OrdersService extends BaseService {
   public async hasOrder (params: OrdersProps) {
     return this.run(async (ctx, app) => {
       return await ctx.model.Orders.findOne({
+        order: [
+          ['createTime', 'DESC']
+        ],
         where: {
           userId: params.userId,
           houseId: params.houseId
@@ -39,7 +42,6 @@ export default class OrdersService extends BaseService {
 
   public async lists (params: OrdersList) {
     return this.run(async (ctx, app) => {
-      console.log('params', params);
       return ctx.model.Orders.findAll({
         where: {
           isPayed: params.type,
@@ -63,6 +65,20 @@ export default class OrdersService extends BaseService {
       });
     });
   }
+
+  public async pay (params: PayProps) {
+    return this.run(async (ctx, app) => {
+      return await ctx.model.Orders.update({
+        isPayed: 1,
+        orderNumber: params.orderNumber,
+        updateTime: params.updateTime
+      }, {
+        where: {
+          id: params.id
+        }
+      });
+    });
+  }
 }
 
 export interface OrdersProps {
@@ -79,4 +95,10 @@ export interface OrdersList {
   userId: string;
   pageSize: number;
   pageNum: number;
+}
+
+export interface PayProps {
+  id: string;
+  orderNumber: string;
+  updateTime: string;
 }
