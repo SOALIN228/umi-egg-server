@@ -26,6 +26,10 @@ const plugin: EggPlugin = {
   notFound: {
     enable: true,
     path: path.join(__dirname, '../lib/plugin/egg-notFound')
+  },
+  allowHosts: {
+    enable: true,
+    path: path.join(__dirname, '../lib/plugin/egg-allowHosts')
   }
 };
 

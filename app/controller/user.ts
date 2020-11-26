@@ -113,7 +113,8 @@ export default class UserController extends ErrorController {
     try {
       ctx.service.user.edit({
         ...ctx.params(),
-        updateTime: ctx.helper.time()
+        updateTime: ctx.helper.time(),
+        sign: ctx.helper.escape(ctx.params('sign')) // xss 攻击处理，进行转义
       });
       this.success({ msg: '修改成功' });
     } catch (error) {

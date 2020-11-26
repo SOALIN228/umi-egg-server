@@ -22,7 +22,11 @@ export default function app (app: Application) {
       store[key] = null;
     }
   };
-  // 配置自定义middlewaer，加入到洋葱模型中，每次路由前执行
-  app.config.coreMiddleware.push('notFound');
-  app.config.coreMiddleware.push('auth');
+  // 配置自定义middleware，加入到洋葱模型中，每次路由前执行
+  const middlewares = app.config.coreMiddleware;
+  app.config.coreMiddleware = [...middlewares, ...[
+    'allowHosts',
+    'notFound',
+    'auth',
+  ]];
 }

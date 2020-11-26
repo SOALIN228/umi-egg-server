@@ -28,6 +28,9 @@ export default (appInfo: EggAppInfo) => {
     },
   };
 
+  // csrf 访问白名单
+  config.allowHosts = ['localhost:8000', '127.0.0.1:8000'];
+
   // 配置session
   config.session = {
     key: 'SOA_salt',
