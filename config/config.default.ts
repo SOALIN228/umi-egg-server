@@ -31,6 +31,18 @@ export default (appInfo: EggAppInfo) => {
   // csrf 访问白名单
   config.allowHosts = ['localhost:8000', '127.0.0.1:8000'];
 
+  // 访问限流
+  config.interfaceLimit = {
+    maxCount: 10, // 最多请求个数
+    time: 3 * 1000, // 间隔时间
+  };
+
+  // 缓存接口内容到redis
+  config.interfaceCache = {
+    expire: 10,
+    include: ['/api/house/hot']
+  };
+
   // 配置session
   config.session = {
     key: 'SOA_salt',
@@ -46,7 +58,7 @@ export default (appInfo: EggAppInfo) => {
 
   // 配置登录拦截
   config.auth = {
-    exclude: ['/api/user/login', '/api/user/register']
+    exclude: ['/api/user/login', '/api/user/register', '/api/commons/cities', '/api/house/hot', '/api/house/search']
   };
 
   // 配置sequelize 连接mysql

@@ -1,5 +1,5 @@
 {
-  "name": "egg-notfound",
+  "name": "egg-not-found",
   "eggPlugin": {
     "name": "notFound"
   }
