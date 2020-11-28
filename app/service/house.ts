@@ -77,15 +77,17 @@ export default class HouseService extends BaseService {
         ]
       });
 
-      // 访问数+1
-      await ctx.model.House.update({
-        showCount: result.showCount + 1
-      }, {
-        where: {
-          id
-        }
-      });
-
+      if (result && result.showCount) {
+        // 访问数+1
+        await ctx.model.House.update({
+          showCount: result.showCount + 1
+        }, {
+          where: {
+            id
+          }
+        });
+      }
+      console.log('ree', result);
       return result;
     });
   }

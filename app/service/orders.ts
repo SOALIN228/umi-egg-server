@@ -84,6 +84,19 @@ export default class OrdersService extends BaseService {
       });
     });
   }
+
+  public async achieve (params: AchieveProps) {
+    return this.run(async (ctx, app) => {
+      return await ctx.model.Orders.update({
+        isPayed: 2,
+        updateTime: params.updateTime
+      }, {
+        where: {
+          id: params.id
+        }
+      });
+    });
+  }
 }
 
 export interface OrdersProps {
@@ -105,5 +118,10 @@ export interface OrdersList {
 export interface PayProps {
   id: string;
   orderNumber: string;
+  updateTime: string;
+}
+
+export interface AchieveProps {
+  id: string;
   updateTime: string;
 }

@@ -77,4 +77,23 @@ export default class OrdersController extends ErrorController {
       this.error('订单不存在');
     }
   }
+
+  public async achieve () {
+    const { ctx, app } = this;
+    const { id } = ctx.params();
+    const order = await ctx.model.Orders.findByPk(id);
+    if (order) {
+      try {
+        const result: any = await ctx.service.orders.achieve({
+          id,
+          updateTime: ctx.helper.time()
+        });
+        this.success(result);
+      } catch (error) {
+        this.error('订单完成失败');
+      }
+    } else {
+      this.error('订单不存在');
+    }
+  }
 }

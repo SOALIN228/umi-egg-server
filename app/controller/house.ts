@@ -22,9 +22,13 @@ export default class HouseController extends ErrorController {
   public async detail () {
     const { ctx } = this;
     const result: any = await ctx.service.house.detail(ctx.params('id'));
-    this.success({
-      info: result,
-      banner: result.imgs
-    });
+    if (result) {
+      this.success({
+        info: result,
+        banner: result.imgs
+      });
+    } else {
+      this.error('该房间不存在');
+    }
   }
 }
