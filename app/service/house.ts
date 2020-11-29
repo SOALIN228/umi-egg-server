@@ -87,7 +87,6 @@ export default class HouseService extends BaseService {
           }
         });
       }
-      console.log('ree', result);
       return result;
     });
   }
